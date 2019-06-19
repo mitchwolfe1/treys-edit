@@ -135,7 +135,7 @@ class Evaluator(object):
 
         assert len(board) == 5, "Invalid board length"
         for hand in hands:
-            assert len(hand) == 2, "Inavlid hand length"
+            assert len(hand) == 2, "Invalid hand length"
 
         line_length = 10
         stages = ["FLOP", "TURN", "RIVER"]
