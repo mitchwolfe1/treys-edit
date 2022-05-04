@@ -22,7 +22,10 @@ evaluator = Evaluator()
 
 # and rank your hand
 rank = evaluator.evaluate(board, hand)
+class_ = evaluator.get_rank_class(rank)
+print("{} {}".format(rank, evaluator.class_to_string(class_)))
 print()
+
 # or for random cards or games, create a deck
 print("Dealing a new hand...")
 deck = Deck()
@@ -47,8 +50,8 @@ p1_class = evaluator.get_rank_class(p1_score)
 p2_class = evaluator.get_rank_class(p2_score)
 
 # or get a human-friendly string to describe the score
-print("Player 1 hand rank = {} {evaluator.class_to_string(p1_class)}".format(p1_score))
-print("Player 2 hand rank = {} {evaluator.class_to_string(p2_class)}".format(p2_score))
+print("Player 1 hand rank = {} {}".format(p1_score, evaluator.class_to_string(p1_class)))
+print("Player 2 hand rank = {} {}".format(p2_score, evaluator.class_to_string(p2_class)))
 
 # or just a summary of the entire hand
 hands = [player1_hand, player2_hand]

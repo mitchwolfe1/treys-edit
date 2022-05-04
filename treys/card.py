@@ -48,8 +48,11 @@ class Card:
         8: chr(9827)    # clubs
     }
 
-    # hearts and diamonds
-    PRETTY_REDS = [2, 4]
+    SUIT_COLORS = {
+        2: "red",
+        4: "blue",
+        8: "green"
+    }
 
     @staticmethod
     def new(string):
@@ -182,10 +185,10 @@ class Card:
         suit_int = Card.get_suit_int(card_int)
         rank_int = Card.get_rank_int(card_int)
 
-        # if we need to color red
+        # color
         s = Card.PRETTY_SUITS[suit_int]
-        if color and suit_int in Card.PRETTY_REDS:
-            s = colored(s, "red")
+        if color and suit_int in Card.SUIT_COLORS:
+            s = colored(s, Card.SUIT_COLORS[suit_int])
 
         r = Card.STR_RANKS[rank_int]
 
@@ -196,10 +199,10 @@ class Card:
         """
         Expects a single integer as input
         """
-        return Card.int_to_pretty_str(card_int)
+        print(Card.int_to_pretty_str(card_int))
 
     @staticmethod
-    def print_pretty_cards(card_ints):
+    def ints_to_pretty_str(card_ints):
         """
         Expects a list of cards in integer form.
         """
@@ -212,3 +215,10 @@ class Card:
                 output += str(Card.int_to_pretty_str(c)) + " "
     
         return output
+
+    @staticmethod
+    def print_pretty_cards(card_ints):
+        """
+        Expects a list of cards in integer form.
+        """
+        print(Card.ints_to_pretty_str(card_ints))

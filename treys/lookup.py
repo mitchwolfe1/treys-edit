@@ -25,6 +25,7 @@ class LookupTable(object):
     * Royal flush (best hand possible)          => 1
     * 7-5-4-3-2 unsuited (worst hand possible)  => 7462
     """
+    MAX_ROYAL_FLUSH     = 1
     MAX_STRAIGHT_FLUSH  = 10
     MAX_FOUR_OF_A_KIND  = 166
     MAX_FULL_HOUSE      = 322 
@@ -36,6 +37,7 @@ class LookupTable(object):
     MAX_HIGH_CARD       = 7462
 
     MAX_TO_RANK_CLASS = {
+        MAX_ROYAL_FLUSH: 0,
         MAX_STRAIGHT_FLUSH: 1,
         MAX_FOUR_OF_A_KIND: 2,
         MAX_FULL_HOUSE: 3,
@@ -48,6 +50,7 @@ class LookupTable(object):
     }
 
     RANK_CLASS_TO_STRING = {
+        0: "Royal Flush",
         1: "Straight Flush",
         2: "Four of a Kind",
         3: "Full House",
