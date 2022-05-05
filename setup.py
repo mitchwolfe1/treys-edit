@@ -4,12 +4,13 @@ Treys: A pure Python poker hand evaluation library
 
 from setuptools import setup
 
+
 setup(
     name='treys',
-    version='0.1.4',
+    version='0.1.5',
     description='treys is a pure Python poker hand evaluation library',
     long_description=open('README.rst').read(),
-    author='Will Drevo',
+    author='Will Drevo, Mark Saindon, Imran Hendley',
     url='https://github.com/ihendley/treys',
     license='MIT',
     packages=['treys'],

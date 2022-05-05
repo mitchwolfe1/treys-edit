@@ -1,3 +1,5 @@
+from typing import Sequence
+
 class Card:
     """
     Static class that handles cards. We represent cards as 32-bit integers, so 
@@ -26,36 +28,36 @@ class Card:
     """
 
     # the basics
-    STR_RANKS = '23456789TJQKA'
-    INT_RANKS = range(13)
-    PRIMES = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41]
+    STR_RANKS: str = '23456789TJQKA'
+    INT_RANKS: range = range(13)
+    PRIMES: list[int] = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41]
 
     # conversion from string => int
-    CHAR_RANK_TO_INT_RANK = dict(zip(list(STR_RANKS), INT_RANKS))
-    CHAR_SUIT_TO_INT_SUIT = {
+    CHAR_RANK_TO_INT_RANK: dict[str, int] = dict(zip(list(STR_RANKS), INT_RANKS))
+    CHAR_SUIT_TO_INT_SUIT: dict[str, int] = {
         's': 1,  # spades
         'h': 2,  # hearts
         'd': 4,  # diamonds
         'c': 8,  # clubs
     }
-    INT_SUIT_TO_CHAR_SUIT = 'xshxdxxxc'
+    INT_SUIT_TO_CHAR_SUIT: str = 'xshxdxxxc'
 
     # for pretty printing
-    PRETTY_SUITS = {
+    PRETTY_SUITS: dict[int, str] = {
         1: chr(9824),   # spades
         2: chr(9829),   # hearts
         4: chr(9830),   # diamonds
         8: chr(9827)    # clubs
     }
 
-    SUIT_COLORS = {
+    SUIT_COLORS: dict[int, str] = {
         2: "red",
         4: "blue",
         8: "green"
     }
 
     @staticmethod
-    def new(string):
+    def new(string: str) -> int:
         """
         Converts Card string to binary integer representation of card, inspired by:
         
@@ -75,29 +77,29 @@ class Card:
         return bitrank | suit | rank | rank_prime
 
     @staticmethod
-    def int_to_str(card_int):
+    def int_to_str(card_int: int) -> str:
         rank_int = Card.get_rank_int(card_int)
         suit_int = Card.get_suit_int(card_int)
         return Card.STR_RANKS[rank_int] + Card.INT_SUIT_TO_CHAR_SUIT[suit_int]
 
     @staticmethod
-    def get_rank_int(card_int):
+    def get_rank_int(card_int: int) -> int:
         return (card_int >> 8) & 0xF
 
     @staticmethod
-    def get_suit_int(card_int):
+    def get_suit_int(card_int: int) -> int:
         return (card_int >> 12) & 0xF
 
     @staticmethod
-    def get_bitrank_int(card_int):
+    def get_bitrank_int(card_int: int) -> int:
         return (card_int >> 16) & 0x1FFF
 
     @staticmethod
-    def get_prime(card_int):
+    def get_prime(card_int: int) -> int:
         return card_int & 0x3F
 
     @staticmethod
-    def hand_to_binary(card_strs):
+    def hand_to_binary(card_strs: Sequence[str]) -> list[int]:
         """
         Expects a list of cards as strings and returns a list
         of integers of same length corresponding to those strings. 
@@ -108,7 +110,7 @@ class Card:
         return bhand
 
     @staticmethod
-    def prime_product_from_hand(card_ints):
+    def prime_product_from_hand(card_ints: Sequence[int]) -> int:
         """
         Expects a list of cards in integer form. 
         """
@@ -120,7 +122,7 @@ class Card:
         return product
 
     @staticmethod
-    def prime_product_from_rankbits(rankbits):
+    def prime_product_from_rankbits(rankbits: int) -> int:
         """
         Returns the prime product using the bitrank (b)
         bits of the hand. Each 1 in the sequence is converted
@@ -151,7 +153,7 @@ class Card:
         return product
 
     @staticmethod
-    def int_to_binary(card_int):
+    def int_to_binary(card_int: int) -> str:
         """
         For debugging purposes. Displays the binary number as a 
         human readable string in groups of four digits. 
@@ -167,7 +169,7 @@ class Card:
         return "".join(output)
 
     @staticmethod
-    def int_to_pretty_str(card_int):
+    def int_to_pretty_str(card_int: int) -> str:
         """
         Prints a single card 
         """
@@ -195,14 +197,14 @@ class Card:
         return "[{}{}]".format(r,s)
 
     @staticmethod
-    def print_pretty_card(card_int):
+    def print_pretty_card(card_int: int) -> None:
         """
         Expects a single integer as input
         """
         print(Card.int_to_pretty_str(card_int))
 
     @staticmethod
-    def ints_to_pretty_str(card_ints):
+    def ints_to_pretty_str(card_ints: Sequence[int]) -> str:
         """
         Expects a list of cards in integer form.
         """
@@ -217,7 +219,7 @@ class Card:
         return output
 
     @staticmethod
-    def print_pretty_cards(card_ints):
+    def print_pretty_cards(card_ints: Sequence[int]) -> None:
         """
         Expects a list of cards in integer form.
         """

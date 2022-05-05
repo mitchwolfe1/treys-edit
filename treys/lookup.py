@@ -1,8 +1,11 @@
+from collections.abc import Iterator
 import itertools
+from typing import Sequence
+
 from .card import Card
 
 
-class LookupTable(object):
+class LookupTable:
     """
     Number of Distinct Hand Values:
 
@@ -25,18 +28,18 @@ class LookupTable(object):
     * Royal flush (best hand possible)          => 1
     * 7-5-4-3-2 unsuited (worst hand possible)  => 7462
     """
-    MAX_ROYAL_FLUSH     = 1
-    MAX_STRAIGHT_FLUSH  = 10
-    MAX_FOUR_OF_A_KIND  = 166
-    MAX_FULL_HOUSE      = 322 
-    MAX_FLUSH           = 1599
-    MAX_STRAIGHT        = 1609
-    MAX_THREE_OF_A_KIND = 2467
-    MAX_TWO_PAIR        = 3325
-    MAX_PAIR            = 6185
-    MAX_HIGH_CARD       = 7462
+    MAX_ROYAL_FLUSH: int     = 1
+    MAX_STRAIGHT_FLUSH: int  = 10
+    MAX_FOUR_OF_A_KIND: int  = 166
+    MAX_FULL_HOUSE: int      = 322 
+    MAX_FLUSH: int           = 1599
+    MAX_STRAIGHT: int        = 1609
+    MAX_THREE_OF_A_KIND: int = 2467
+    MAX_TWO_PAIR: int        = 3325
+    MAX_PAIR: int            = 6185
+    MAX_HIGH_CARD: int       = 7462
 
-    MAX_TO_RANK_CLASS = {
+    MAX_TO_RANK_CLASS: dict[int, int] = {
         MAX_ROYAL_FLUSH: 0,
         MAX_STRAIGHT_FLUSH: 1,
         MAX_FOUR_OF_A_KIND: 2,
@@ -49,7 +52,7 @@ class LookupTable(object):
         MAX_HIGH_CARD: 9
     }
 
-    RANK_CLASS_TO_STRING = {
+    RANK_CLASS_TO_STRING: dict[int, str] = {
         0: "Royal Flush",
         1: "Straight Flush",
         2: "Four of a Kind",
@@ -62,13 +65,13 @@ class LookupTable(object):
         9: "High Card"
     }
 
-    def __init__(self):
+    def __init__(self) -> None:
         """
         Calculates lookup tables
         """
         # create dictionaries
-        self.flush_lookup = {}
-        self.unsuited_lookup = {}
+        self.flush_lookup: dict[int, int] = {}
+        self.unsuited_lookup: dict[int, int] = {}
 
         # create the lookup table in piecewise fashion
         # this will call straights and high cards method,
@@ -76,7 +79,7 @@ class LookupTable(object):
         self.flushes()
         self.multiples()
 
-    def flushes(self):
+    def flushes(self) -> None:
         """
         Straight flushes and flushes. 
 
@@ -148,7 +151,7 @@ class LookupTable(object):
         # and differ only by context 
         self.straight_and_highcards(straight_flushes, flushes)
 
-    def straight_and_highcards(self, straights, highcards):
+    def straight_and_highcards(self, straights: Sequence[int], highcards: Sequence[int]) -> None:
         """
         Unique five card sets. Straights and highcards. 
 
@@ -167,7 +170,7 @@ class LookupTable(object):
             self.unsuited_lookup[prime_product] = rank
             rank += 1
 
-    def multiples(self):
+    def multiples(self) -> None:
         """
         Pair, Two Pair, Three of a Kind, Full House, and 4 of a Kind.
         """
@@ -211,9 +214,9 @@ class LookupTable(object):
             kickers.remove(r)
             gen = itertools.combinations(kickers, 2)
 
-            for kickers in gen:
+            for kickers_2combo in gen:
 
-                c1, c2 = kickers
+                c1, c2 = kickers_2combo
                 product = Card.PRIMES[r]**3 * Card.PRIMES[c1] * Card.PRIMES[c2]
                 self.unsuited_lookup[product] = rank
                 rank += 1
@@ -221,7 +224,7 @@ class LookupTable(object):
         # 4) Two Pair
         rank = LookupTable.MAX_THREE_OF_A_KIND + 1
 
-        tpgen = itertools.combinations(backwards_ranks, 2)
+        tpgen = itertools.combinations(tuple(backwards_ranks), 2)
         for tp in tpgen:
 
             pair1, pair2 = tp
@@ -242,25 +245,25 @@ class LookupTable(object):
 
             kickers = backwards_ranks[:]
             kickers.remove(pairrank)
-            kgen = itertools.combinations(kickers, 3)
+            kgen = itertools.combinations(tuple(kickers), 3)
 
-            for kickers in kgen:
+            for kickers_3combo in kgen:
 
-                k1, k2, k3 = kickers
+                k1, k2, k3 = kickers_3combo
                 product = Card.PRIMES[pairrank]**2 * Card.PRIMES[k1] \
                     * Card.PRIMES[k2] * Card.PRIMES[k3]
                 self.unsuited_lookup[product] = rank
                 rank += 1
 
-    def write_table_to_disk(self, table, filepath):
+    def write_table_to_disk(self, table: dict[int, int], filepath: str) -> None:
         """
         Writes lookup table to disk
         """
         with open(filepath, 'w') as f:
-            for prime_prod, rank in table.iteritems():
+            for prime_prod, rank in table.items():
                 f.write(str(prime_prod) + "," + str(rank) + '\n')
 
-    def get_lexographically_next_bit_sequence(self, bits):
+    def get_lexographically_next_bit_sequence(self, bits: int) -> Iterator[int]:
         """
         Bit hack from here:
         http://www-graphics.stanford.edu/~seander/bithacks.html#NextBitPermutation

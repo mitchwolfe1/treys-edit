@@ -18,12 +18,11 @@ Implementation notes
 --------------------
 
 Treys is a Python 3 port of
-`Deuces <https://github.com/worldveil/deuces>`__. Most of work is taken
-from `msaindon’s <https://github.com/msaindon/deuces>`__ fork.
+`Deuces <https://github.com/worldveil/deuces>`__ based on the initial work in
+`msaindon’s <https://github.com/msaindon/deuces>`__ fork. Deuces was written 
+by `Will Drevo <http://willdrevo.com/>`__ for the MIT Pokerbots Competition. 
 
-Treys (originally Deuces) was written by `Will
-Drevo <http://willdrevo.com/>`__ for the MIT Pokerbots Competition. It
-is lightweight and fast. All lookups are done with bit arithmetic and
+Treys is lightweight and fast. All lookups are done with bit arithmetic and
 dictionary lookups. That said, Treys won’t beat a C implemenation (~250k
 eval/s) but it is useful for situations where Python is required or
 where bots are allocated reasonable thinking time (human time scale).
@@ -79,8 +78,7 @@ Otherwise move straight to evaluating your hand strength:
 
 Hand strength is valued on a scale of 1 to 7462, where 1 is a Royal
 Flush and 7462 is unsuited 7-5-4-3-2, as there are only 7642 distinctly
-ranked hands in poker. Once again, refer to my blog post for a more
-mathematically complete explanation of why this is so.
+ranked hands in poker.
 
 If you want to deal out cards randomly from a deck, you can also do that
 with Treys:

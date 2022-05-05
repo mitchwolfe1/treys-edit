@@ -1,9 +1,11 @@
 import itertools
+from typing import Sequence
+
 from .card import Card
-from .deck import Deck
 from .lookup import LookupTable
 
-class Evaluator(object):
+
+class Evaluator:
     """
     Evaluates hand strengths using a variant of Cactus Kev's algorithm:
     http://suffe.cool/poker/evaluator.html
@@ -14,7 +16,7 @@ class Evaluator(object):
     all calculations are done with bit arithmetic and table lookups. 
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
 
         self.table = LookupTable()
         
@@ -24,7 +26,7 @@ class Evaluator(object):
             7: self._seven
         }
 
-    def evaluate(self, cards, board):
+    def evaluate(self, cards: list[int], board: list[int]) -> int:
         """
         This is the function that the user calls to get a hand rank. 
 
@@ -33,7 +35,7 @@ class Evaluator(object):
         all_cards = cards + board
         return self.hand_size_map[len(all_cards)](all_cards)
 
-    def _five(self, cards):
+    def _five(self, cards: Sequence[int]) -> int:
         """
         Performs an evalution given cards in integer form, mapping them to
         a rank in the range [1, 7462], with lower ranks being more powerful.
@@ -52,7 +54,7 @@ class Evaluator(object):
             prime = Card.prime_product_from_hand(cards)
             return self.table.unsuited_lookup[prime]
 
-    def _six(self, cards):
+    def _six(self, cards: Sequence[int]) -> int:
         """
         Performs five_card_eval() on all (6 choose 5) = 6 subsets
         of 5 cards in the set of 6 to determine the best ranking, 
@@ -69,7 +71,7 @@ class Evaluator(object):
 
         return minimum
 
-    def _seven(self, cards):
+    def _seven(self, cards: Sequence[int]) -> int:
         """
         Performs five_card_eval() on all (7 choose 5) = 21 subsets
         of 5 cards in the set of 7 to determine the best ranking, 
@@ -86,7 +88,7 @@ class Evaluator(object):
 
         return minimum
 
-    def get_rank_class(self, hr):
+    def get_rank_class(self, hr: int) -> int:
         """
         Returns the class of hand given the hand hand_rank
         returned from evaluate. 
@@ -114,19 +116,19 @@ class Evaluator(object):
         else:
             raise Exception("Inavlid hand rank, cannot return rank class")
 
-    def class_to_string(self, class_int):
+    def class_to_string(self, class_int: int) -> str:
         """
         Converts the integer class hand score into a human-readable string.
         """
         return LookupTable.RANK_CLASS_TO_STRING[class_int]
 
-    def get_five_card_rank_percentage(self, hand_rank):
+    def get_five_card_rank_percentage(self, hand_rank: int) -> float:
         """
         Scales the hand rank score to the [0.0, 1.0] range.
         """
         return float(hand_rank) / float(LookupTable.MAX_HIGH_CARD)
 
-    def hand_summary(self, board, hands):
+    def hand_summary(self, board: list[int], hands: list[list[int]]) -> None:
         """
         Gives a sumamry of the hand with ranks as time proceeds. 
 

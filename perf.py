@@ -1,15 +1,17 @@
 import time
-import random
-from treys import Card, Deck, Evaluator
 
-def setup(n, m):
+from treys.deck import Deck
+from treys.evaluator import Evaluator
+
+
+def setup(n: int, m: int) -> tuple[list[list[int]], list[list[int]]]:
 
     deck = Deck()
 
     boards = []
     hands = []
 
-    for i in range(n):
+    for _ in range(n):
         boards.append(deck.draw(m))
         hands.append(deck.draw(2))
         deck.shuffle()

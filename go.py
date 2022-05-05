@@ -1,4 +1,7 @@
-from treys import Card, Evaluator, Deck
+from treys.card import Card
+from treys.evaluator import Evaluator
+from treys.deck import Deck
+
 
 # create a card
 card = Card.new('Qh')
