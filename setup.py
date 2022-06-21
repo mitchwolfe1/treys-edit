@@ -7,7 +7,7 @@ from setuptools import setup
 
 setup(
     name='treys',
-    version='0.1.5',
+    version='0.1.6',
     description='treys is a pure Python poker hand evaluation library',
     long_description=open('README.rst').read(),
     author='Will Drevo, Mark Saindon, Imran Hendley',

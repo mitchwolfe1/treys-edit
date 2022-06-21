@@ -1,7 +1,7 @@
 import time
 
 from treys.deck import Deck
-from treys.evaluator import Evaluator
+from treys.evaluator import PLOEvaluator
 
 
 def setup(n: int, m: int) -> tuple[list[list[int]], list[list[int]]]:
@@ -13,7 +13,7 @@ def setup(n: int, m: int) -> tuple[list[list[int]], list[list[int]]]:
 
     for _ in range(n):
         boards.append(deck.draw(m))
-        hands.append(deck.draw(2))
+        hands.append(deck.draw(4))
         deck.shuffle()
 
     return boards, hands
@@ -21,7 +21,7 @@ def setup(n: int, m: int) -> tuple[list[list[int]], list[list[int]]]:
 
 n = 10000
 cumtime = 0.0
-evaluator = Evaluator()
+evaluator = PLOEvaluator()
 boards, hands = setup(n, 5)
 for i in range(len(boards)):
     start = time.time()
@@ -29,7 +29,7 @@ for i in range(len(boards)):
     cumtime += (time.time() - start)
 
 avg = float(cumtime / n)
-print("7 card evaluation:")
+print("9 card evaluation:")
 print("[*] Treys: Average time per evaluation: %f" % avg)
 print("[*] Treys: Evaluations per second = %f" % (1.0 / avg))
 
@@ -43,7 +43,7 @@ for i in range(len(boards)):
     cumtime += (time.time() - start)
 
 avg = float(cumtime / n)
-print("6 card evaluation:")
+print("8 card evaluation:")
 print("[*] Treys: Average time per evaluation: %f" % avg)
 print("[*] Treys: Evaluations per second = %f" % (1.0 / avg))
 
@@ -57,6 +57,6 @@ for i in range(len(boards)):
     cumtime += (time.time() - start)
 
 avg = float(cumtime / n)
-print("5 card evaluation:")
+print("7 card evaluation:")
 print("[*] Treys: Average time per evaluation: %f" % avg)
 print("[*] Treys: Evaluations per second = %f" % (1.0 / avg))

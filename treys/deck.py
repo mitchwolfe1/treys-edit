@@ -1,4 +1,4 @@
-from random import shuffle as rshuffle
+from random import Random
 
 from .card import Card
 
@@ -11,13 +11,14 @@ class Deck:
     """
     _FULL_DECK: list[int] = []
 
-    def __init__(self) -> None:
+    def __init__(self, seed: int = None) -> None:
+        self._random = Random(seed)
         self.shuffle()
 
     def shuffle(self) -> None:
         # and then shuffle
         self.cards = Deck.GetFullDeck()
-        rshuffle(self.cards)
+        self._random.shuffle(self.cards)
 
     def draw(self, n: int = 1) -> list[int]:
         cards = []

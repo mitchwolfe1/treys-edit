@@ -1,5 +1,5 @@
 from treys.card import Card
-from treys.evaluator import Evaluator
+from treys.evaluator import PLOEvaluator
 from treys.deck import Deck
 
 
@@ -11,12 +11,14 @@ board = [
     Card.new('2h'),
     Card.new('2s'),
     Card.new('Jc'),
-    Card.new('As'),
-    Card.new('Kc')
+    Card.new('Ah'),
+    Card.new('Ks')
 ]
 hand = [
     Card.new('Qs'),
-    Card.new('Th')
+    Card.new('Th'),
+    Card.new('9c'),
+    Card.new('8s')
 ]
 
 # pretty print cards to console
@@ -24,7 +26,7 @@ Card.print_pretty_cards(board)
 Card.print_pretty_cards(hand)
 
 # create an evaluator
-evaluator = Evaluator()
+evaluator = PLOEvaluator()
 
 # and rank your hand
 rank = evaluator.evaluate(hand, board)
@@ -36,8 +38,8 @@ print()
 print("Dealing a new hand...")
 deck = Deck()
 board = deck.draw(5)
-player1_hand = deck.draw(2)
-player2_hand = deck.draw(2)
+player1_hand = deck.draw(4)
+player2_hand = deck.draw(4)
 
 print("The board:")
 Card.print_pretty_cards(board)

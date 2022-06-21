@@ -16,6 +16,9 @@ class Evaluator:
     all calculations are done with bit arithmetic and table lookups. 
     """
 
+    HAND_LENGTH = 2
+    BOARD_LENGTH = 5
+
     def __init__(self) -> None:
 
         self.table = LookupTable()
@@ -26,13 +29,13 @@ class Evaluator:
             7: self._seven
         }
 
-    def evaluate(self, cards: list[int], board: list[int]) -> int:
+    def evaluate(self, hand: list[int], board: list[int]) -> int:
         """
         This is the function that the user calls to get a hand rank. 
 
         No input validation because that's cycles!
         """
-        all_cards = cards + board
+        all_cards = hand + board
         return self.hand_size_map[len(all_cards)](all_cards)
 
     def _five(self, cards: Sequence[int]) -> int:
@@ -62,8 +65,7 @@ class Evaluator:
         """
         minimum = LookupTable.MAX_HIGH_CARD
 
-        all5cardcombobs = itertools.combinations(cards, 5)
-        for combo in all5cardcombobs:
+        for combo in itertools.combinations(cards, 5):
 
             score = self._five(combo)
             if score < minimum:
@@ -79,8 +81,7 @@ class Evaluator:
         """
         minimum = LookupTable.MAX_HIGH_CARD
 
-        all5cardcombobs = itertools.combinations(cards, 5)
-        for combo in all5cardcombobs:
+        for combo in itertools.combinations(cards, 5):
             
             score = self._five(combo)
             if score < minimum:
@@ -136,9 +137,9 @@ class Evaluator:
         analysis to make sense.
         """
 
-        assert len(board) == 5, "Invalid board length"
+        assert len(board) == self.BOARD_LENGTH, "Invalid board length"
         for hand in hands:
-            assert len(hand) == 2, "Invalid hand length"
+            assert len(hand) == self.HAND_LENGTH, "Invalid hand length"
 
         line_length = 10
         stages = ["FLOP", "TURN", "RIVER"]
@@ -182,3 +183,19 @@ class Evaluator:
                     print("Player {} is the winner with a {}\n".format(winners[0] + 1, hand_result))
                 else:
                     print("Players {} tied for the win with a {}\n".format([x + 1 for x in winners],hand_result))
+
+
+class PLOEvaluator(Evaluator):
+
+    HAND_LENGTH = 4
+
+    def evaluate(self, hand: list[int], board: list[int]) -> int:
+        minimum = LookupTable.MAX_HIGH_CARD
+
+        for hand_combo in itertools.combinations(hand, 2):
+            for board_combo in itertools.combinations(board, 3):
+                score = Evaluator._five(self, list(board_combo) + list(hand_combo))
+                if score < minimum:
+                    minimum = score
+
+        return minimum
